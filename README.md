@@ -17,4 +17,4 @@ later on an unrelated event.
 ---
 
 Static single-page site, served via GitHub Pages on the custom domain.
-Maintained independently. Corrections welcome: hello@skillinjection.com
+Maintained independently. Corrections and additions welcome via [GitHub Issues](https://github.com/Arlenjim/skillinjection/issues).
