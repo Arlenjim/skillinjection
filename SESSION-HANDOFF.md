@@ -50,9 +50,14 @@ Précédée d'une PR de contribution pure vers
    workflow `success`, 4/4 empreintes servi == commit, page en 200.
 5. `PREVISION-2026-09-20.md` : prévision datée (28 jours, trois scénarios,
    probabilités), à confronter le 2026-10-20.
-6. `OUTREACH-2026-09-20.md` : 5 cibles pour un lien suivi, `rel` vérifié sur
-   le HTML servi (0 nofollow), angle par cible, brouillon, règles. **Rien
-   d'envoyé** — chaque message part sur GO explicite de Damien.
+6. **Route 2 exécutée** (`OUTREACH-2026-09-20.md`, `rel` vérifié sur le HTML
+   servi, 0 nofollow) : **4 courriels envoyés** depuis le Gmail de Damien, sur
+   son GO — Cloak and Detonate (Congying Xu + Shuai Wang, HKUST), SkillsMetric
+   (Xinze Chen, CUNY), SkillVetBench (Ismail Hossain, UTEP), Bruce W. Lee
+   (UPenn / METR) ; adresses prises dans les PDF ou le profil GitHub public,
+   jamais devinées. **PR OWASP #87** ouverte sur `ast08.md` (References),
+   divulgation en tête. ColluSkill écarté (aucune adresse), Simon Willison
+   abandonné (aucun canal privé vérifiable, décision Damien).
 7. `SEO-PROCESS.md` mis à jour dans les deux dépôts (identiques).
 
 ## État des dépôts
@@ -75,10 +80,13 @@ Sites en ligne à jour, prouvé par empreinte.
 - [ ] Sitemaps : « Dernière lecture » remplie ? Sinon creuser.
 - [ ] Le 2026-10-20 : confronter `PREVISION-2026-09-20.md` aux chiffres.
 
+**À surveiller :**
+- [ ] Réponses des 4 auteurs dans Gmail ; une correction demandée → mettre la
+      page à jour avec attribution, et c'est le moment de demander le lien.
+      Pas de relance avant le 2026-10-11.
+- [ ] PR OWASP #87 (revue) et PR awesome-list #70 (revue).
+
 **Bloqué sur Damien :**
-- [ ] Route 2 : choisir les cibles de `OUTREACH-2026-09-20.md` et donner le
-      GO message par message (recommandé pour commencer : OWASP AST10 + les 3
-      auteurs cités).
 - [ ] Valider la propriété `https://sleeperattack.com/` dans Search Console.
 - [ ] Rendu mobile (< 560 px) de la home section 09 et de la nouvelle page :
       les tableaux défilent horizontalement (`overflow-x:auto`), à voir sur
