@@ -8,97 +8,107 @@ décisions prises ailleurs vivent dans le Brain (`seo-attack-pages`), pas ici.
 ## Session du 2026-09-20
 
 **Sujet :** « faire vivre la page » skillinjection.com — déblocage du
-déploiement, enrichissement du contenu, Search Console. Précédée d'une PR de
-contribution pure vers `LLMSecurity/awesome-agent-skills-security` (#70).
+déploiement, enrichissement, Search Console, puis construction de la première
+page dédiée du domaine pour rendre le site liable (route 1 du plan backlinks).
+Précédée d'une PR de contribution pure vers
+`LLMSecurity/awesome-agent-skills-security` (#70, en attente de revue).
 
 ### Ce qui a été établi (prouvé, pas supposé)
 
-- **Search Console (lu par Claude via l'extension Chrome, compte connecté)** :
-  la page a été **indexée du ~16/08 au ~03/09 puis éjectée** (« Explorée,
-  actuellement non indexée »). Dernière exploration 19/09, tout est autorisé :
-  jugement de valeur, pas blocage technique. 3 mois : 236 impressions, 6
-  clics, position moyenne 7,2, requête principale « skill injection ».
+- **Search Console (lu via l'extension Chrome, compte connecté)** : la home a
+  été **indexée du ~16/08 au ~03/09 puis éjectée** (« Explorée, actuellement
+  non indexée »). Dernière exploration 19/09, tout autorisé : jugement de
+  valeur, pas blocage. 3 mois : 236 impressions, 6 clics, position 7,2.
+  Cause la plus probable : **aucun lien entrant connu de Google**.
 - **Le sitemap n'avait jamais été lu** (soumis 17/08, « Impossible de
-  récupérer », 0 page), bien que servi en 200 `application/xml`.
-- **Builds Pages bloqués 25 jours** sur les deux dépôts après la panne du
-  26/08. Débloqués par `gh api -X POST repos/<owner>/<repo>/pages/builds`.
-- **sleeperattack.com n'est pas une propriété validée** dans la Search
-  Console du compte.
-
-Détail dans `SEO-PROCESS.md`, « Constats de terrain (2026-09-20) ».
+  récupérer », 0 page) bien que servi en 200.
+- **Builds Pages bloqués 25 jours** après la panne du 26/08 ; débloqués par
+  `gh api -X POST repos/<owner>/<repo>/pages/builds`.
+- **sleeperattack.com n'est pas une propriété validée** dans Search Console.
+- Détail et leçons dans `SEO-PROCESS.md`, « Constats de terrain (2026-09-20) ».
 
 ### Ce qui a été fait (et vérifié)
 
-1. Pages débloqué ; 3 commits en attente poussés sur `skillinjection` ;
-   `sleeperattack` reconstitué (workflow + `SEO-PROCESS.md`, identiques octet
-   pour octet, md5 vérifié) et poussé. **Premier run réel de
-   `verifier-mise-en-ligne.yml` : `success` sur les deux dépôts.**
-2. `index.html` : 7 papiers 2026 ajoutés en section 09, chacun vérifié sur
-   `arxiv.org/abs` **et** l'API `id_list` ; nouveau paragraphe en section 04
-   (CompoSkill, SkillCloak, SkillCamo, chiffres ClawHub) ; phrase Trail of
-   Bits corrigée (ClawHub, Cisco, skills.sh — pas « trois marketplaces ») et
-   liée ; `dateModified` / footer / `sitemap.xml` au 2026-09-20. Checklist
-   du process passée par script (JSON-LD, FAQ == visible, title, h1,
-   canonical). Rendu vérifié dans Chrome via serveur local. Déploiement
-   prouvé : workflow vert + 3/3 empreintes servi == commit.
-3. Search Console : `sitemap.xml` **re-soumis** (colonne « URL envoyées » au
-   20 sept.), **indexation demandée** (confirmation « Indexation demandée »
-   affichée). Les deux sur GO explicite de Damien (délégation totale).
-4. `SEO-PROCESS.md` mis à jour dans les deux dépôts (constats 2026-09-20,
-   procédure Search Console via Chrome, références vérifiées).
+1. Pages débloqué ; commits en attente poussés ; `sleeperattack` reconstitué
+   (workflow + `SEO-PROCESS.md` identiques, md5 vérifié). Premier run réel de
+   `verifier-mise-en-ligne.yml` : `success` sur les deux dépôts.
+2. Home enrichie : 7 papiers 2026 (section 09), paragraphe section 04, phrase
+   Trail of Bits corrigée et liée, dates au 2026-09-20. Déploiement prouvé.
+3. Search Console : sitemap re-soumis, indexation de la home demandée
+   (confirmation affichée).
+4. **Nouvelle page `/skill-scanner-evasion/`** (`5e374e2`) : deux tableaux —
+   attaques (taux d'évasion) et détecteurs (taux de détection) — pour 14
+   papiers + Trail of Bits, chaque chiffre pris dans le résumé arXiv et
+   vérifié page `abs` + API, avec la définition de succès à côté. FAQ (4) ==
+   JSON-LD caractère par caractère. Deux liens depuis le corps de la home,
+   ancre « skill scanner evasion ». Sitemap à 2 URL. Règles CSS `.cmp` en fin
+   de `style.css`. Rendu vérifié en Chrome headless (l'extension s'était
+   déconnectée), défaut de tableau attrapé et corrigé. Déploiement prouvé :
+   workflow `success`, 4/4 empreintes servi == commit, page en 200.
+5. `PREVISION-2026-09-20.md` : prévision datée (28 jours, trois scénarios,
+   probabilités), à confronter le 2026-10-20.
+6. `OUTREACH-2026-09-20.md` : 5 cibles pour un lien suivi, `rel` vérifié sur
+   le HTML servi (0 nofollow), angle par cible, brouillon, règles. **Rien
+   d'envoyé** — chaque message part sur GO explicite de Damien.
+7. `SEO-PROCESS.md` mis à jour dans les deux dépôts (identiques).
 
 ## État des dépôts
 
-Branche `main` des deux dépôts = `origin/main`, rien en attente.
+`main` == `origin/main` des deux côtés après les commits de docs ci-dessous.
 
 | | skillinjection | sleeperattack |
 |---|---|---|
-| contenu 2026-09-20 | `67762a7` | — |
-| constats 2026-09-20 | dernier commit | dernier commit |
+| nouvelle page + home + sitemap + CSS | `5e374e2` | — |
+| home enrichie | `67762a7` | — |
 | workflow de contrôle | `8377bd4` | `cdf7610` |
+| `SEO-PROCESS.md` | dernier commit docs | dernier commit docs |
 
-Sites en ligne à jour, prouvé par empreinte (3/3 sur skillinjection après le
-push de contenu ; sleeperattack inchangé, workflow vert).
+Sites en ligne à jour, prouvé par empreinte.
 
 ## Reste à faire
 
-**À relire (2–3 semaines, via Chrome ou par Damien) :**
-- [ ] Rapport Pages de skillinjection.com : la page est-elle revenue dans
-      l'index après la demande du 2026-09-20 ?
-- [ ] Sitemaps : la colonne « Dernière lecture » s'est-elle remplie ? Si
-      toujours « Impossible de récupérer », creuser (test « URL active »,
-      en-têtes servis à Googlebot).
+**Non fait ce jour, à faire dès que l'extension Chrome est reconnectée :**
+- [ ] Search Console : **demander l'indexation de
+      `https://skillinjection.com/skill-scanner-evasion/`** et **re-soumettre
+      `sitemap.xml`** (il a maintenant 2 URL). L'extension s'est déconnectée
+      pendant la construction de la page ; sans elle, Damien le fait à la
+      main (inspection d'URL → « Demander une indexation » ; Sitemaps →
+      `sitemap.xml` → Envoyer).
+
+**À relire (2–3 semaines) :**
+- [ ] Rapport Pages : home revenue dans l'index ? nouvelle page indexée ?
+- [ ] Sitemaps : « Dernière lecture » remplie ? Sinon creuser.
+- [ ] Le 2026-10-20 : confronter `PREVISION-2026-09-20.md` aux chiffres.
 
 **Bloqué sur Damien :**
-- [ ] Valider la propriété `https://sleeperattack.com/` dans Search Console
-      (bouton « Valider la propriété » — action de compte).
-- [ ] Rendu mobile de skillinjection.com section 09 sous 560 px — toujours
-      non vérifié (reporté depuis le 2026-08-17 ; la section a 7 entrées de
-      plus depuis ce jour).
+- [ ] Route 2 : choisir les cibles de `OUTREACH-2026-09-20.md` et donner le
+      GO message par message (recommandé pour commencer : OWASP AST10 + les 3
+      auteurs cités).
+- [ ] Valider la propriété `https://sleeperattack.com/` dans Search Console.
+- [ ] Rendu mobile (< 560 px) de la home section 09 et de la nouvelle page :
+      les tableaux défilent horizontalement (`overflow-x:auto`), à voir sur
+      téléphone.
 
-**Proposé, sans GO à ce jour :**
-- [ ] Page « vs » #1 « skill injection vs prompt injection » : la décision
-      d'août (attendre des impressions) a maintenant des données — 236
-      impressions en 3 mois, quasi toutes sur « skill injection » et des noms
-      de papiers, aucune sur « vs prompt injection ». À arbitrer sur ces
-      chiffres.
-- [ ] Section 09 : proposition de ne plus ajouter d'entrée sans en retirer
-      une, ou d'ouvrir une page dédiée (page à 2 273 mots, cible 1 200–2 000).
-- [ ] Contrôle de fraîcheur hors GitHub (cron local ou service tiers).
-- [ ] Bootstrap restant : CLAUDE.md projet, template Bureau
-      `SEO-ATTACK-PAGES-REPRISE.txt`.
+**Proposé, sans GO :**
+- [ ] Page « vs » #1 « skill injection vs prompt injection », à arbitrer sur
+      les 236 impressions (quasi toutes sur « skill injection »).
+- [ ] Sortir la liste « Recent research » de la home vers une page dédiée si
+      elle continue de grossir (home à 2 308 mots).
+- [ ] Contrôle de fraîcheur hors GitHub.
+- [ ] Bootstrap restant : CLAUDE.md projet, template Bureau.
 
 ## Comment reprendre
 
 1. Lire ce fichier, puis `C:\brain\projets\seo-attack-pages\STATE.md` et son
    dernier fichier `sessions/`.
-2. `git log -3` + `git status` dans `Projects/skillinjection` et
-   `Projects/sleeperattack` — attendre `main` == `origin/main` des deux côtés.
-3. Search Console : ouvrir via l'extension Chrome (compte Google de Damien
-   connecté), lire Pages + Sitemaps. Toute saisie passe par `form_input` sur la
-   référence du champ, jamais par la frappe simulée (ignorée par les champs
-   Angular Material).
-4. Ne jamais conclure qu'un site est à jour depuis un code HTTP : comparer
-   l'empreinte du contenu servi à celle du commit, ou lire le run du workflow.
-5. Builds Pages coincés en `building` : `gh api -X POST
-   repos/Arlenjim/<repo>/pages/builds`, pas de commit vide.
+2. `git log -3` + `git status` dans les deux dépôts — attendre `main` ==
+   `origin/main`.
+3. Search Console via l'extension Chrome (compte Google de Damien connecté).
+   Saisie : `form_input` sur la référence du champ, jamais la frappe simulée.
+   Si l'extension est déconnectée : Chrome headless pour le rendu, et les
+   clics Search Console reviennent à Damien.
+4. Preuve de fraîcheur = empreinte servi == commit, ou run du workflow. Jamais
+   un code HTTP.
+5. Builds Pages coincés : `gh api -X POST repos/Arlenjim/<repo>/pages/builds`.
+6. Toute nouvelle référence : page `arxiv.org/abs` + API `id_list`, résumé
+   complet lu avant de citer un chiffre.
