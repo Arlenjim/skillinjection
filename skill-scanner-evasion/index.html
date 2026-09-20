@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill scanner evasion: the 2026 numbers, compared</title>
+<meta name="description" content="How often do malicious agent skills get past scanners? Every evasion and detection rate published in 2026, side by side, with what each one measures.">
+<link rel="canonical" href="https://skillinjection.com/skill-scanner-evasion/">
+<meta property="og:title" content="Skill scanner evasion: the 2026 numbers, compared">
+<meta property="og:description" content="Every published evasion and detection rate for agent skill scanners, side by side, with what each one actually measures.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://skillinjection.com/skill-scanner-evasion/">
+<meta property="og:site_name" content="skillinjection.com">
+<meta property="og:image" content="https://skillinjection.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Skill Injection — attack class reference">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Skill scanner evasion: the 2026 numbers, compared">
+<meta name="twitter:description" content="Every published evasion and detection rate for agent skill scanners, side by side, with what each one actually measures.">
+<meta name="twitter:image" content="https://skillinjection.com/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "@id": "https://skillinjection.com/skill-scanner-evasion/#article",
+      "headline": "Skill scanner evasion: the 2026 numbers, compared",
+      "mainEntityOfPage": "https://skillinjection.com/skill-scanner-evasion/",
+      "about": [
+        { "@type": "Thing", "name": "Agent skill scanners" },
+        { "@id": "https://skillinjection.com/#term" }
+      ],
+      "inLanguage": "en",
+      "datePublished": "2026-09-20",
+      "dateModified": "2026-09-20",
+      "author": { "@type": "Organization", "name": "skillinjection.com" },
+      "publisher": { "@type": "Organization", "name": "skillinjection.com" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://skillinjection.com/skill-scanner-evasion/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Are these percentages comparable with each other?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. Each paper defines its own success condition: Poise counts an attack only if the malicious action completes and the user's task still passes, SkillCloak counts a scanner returning a clean verdict, CompoSkill counts a risky chain forming, and the detectors report F1 or recall on their own datasets. The table keeps the definitions next to the numbers for that reason." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a scanner that catches skill injection?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Not from appearance alone. The detectors that report the highest rates in 2026 either execute the skill in a sandbox, inspect the whole set of installed skills together, or rely on an LLM judge whose detection rate varies from 35% to 95% depending on the model. Static pattern analysis reports 0% on host-destruction payloads built from ordinary shell commands and 42% on natural-language prompt injection." }
+        },
+        {
+          "@type": "Question",
+          "name": "Which scanners have been bypassed in published work?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Trail of Bits bypassed ClawHub's malicious-skill detector, Cisco's skill scanner, and all three scanners integrated into skills.sh. SkillCloak reports bypassing eight scanners, ColluSkill six, and Locate-and-Judge surfaces live malicious skills that SkillSpector and Cisco Skill Scanner fail to detect. Most academic papers do not name the commercial scanners they tested." }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do these numbers come from?",
+          "acceptedAnswer": { "@type": "Answer", "text": "From the authors' own abstracts on arXiv and from the Trail of Bits post, each checked against the arXiv abstract page and the arXiv API on 20 September 2026. Nothing here was reproduced independently; the page reports what the authors claim and what they measured." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="bar">
+    <span><span class="dot">●</span> THREAT CLASS · SKILL SCANNERS</span>
+    <span>COMPILED <b>2026</b> · STATUS <b>REFERENCE</b></span>
+  </div>
+
+  <header>
+    <p class="eyebrow">Attack class reference · data</p>
+    <h1>Skill scanner <span class="u">evasion</span></h1>
+    <p class="lede">Every evasion rate and every detection rate published for agent skill scanners in 2026, side by side — with what each number actually measures, because no two papers measure the same thing.</p>
+  </header>
+
+  <div class="def">
+    <span class="k">The short answer</span>
+    <p>Purpose-built evasions get past skill scanners in the <em>80–96%</em> range. The detectors that report the highest rates reach <em>92–97%</em> only when they execute the skill, inspect the whole installed set, or lean on an LLM judge — and that judge's own detection rate swings from 35% to 95% depending on the model.</p>
+  </div>
+
+  <section id="method">
+    <h2><span class="n">01</span> What this page is</h2>
+    <p class="body">Since February 2026 more than a dozen papers have measured how well scanners catch malicious agent skills, from both sides: attacks designed to slip past them, and detectors designed to catch what slips. The figures are quoted everywhere and rarely next to each other. This page puts them in two tables, attacks first, detectors second, and keeps the authors' own definition of success next to each figure.</p>
+    <p class="body">Every number below comes from the authors' abstract on arXiv, or from the Trail of Bits write-up, checked against the arXiv abstract page and the arXiv API on 20 September 2026. Nothing was reproduced independently. Where an abstract reports no figure, the row says so rather than guessing. For what skill injection is and why scanning is structurally weak against it, see <a href="/#why-scanners-miss-it">why scanners miss it</a> on the main page.</p>
+  </section>
+
+  <section id="attacks">
+    <h2><span class="n">02</span> Attacks: how often the scanner says “clean”</h2>
+    <div class="cmp-wrap">
+      <table class="cmp">
+        <thead>
+          <tr><th>Attack · paper</th><th>Technique</th><th>What is counted</th><th>Reported rate</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Trail of Bits, “The sorry state of skill distribution”<span class="id">blog · Jun 2026</span></th>
+            <td>Newline padding past the scanner's truncation limit; a payload hidden in a .docx archive; poisoned Python bytecode; prompt-injection framing to talk an LLM analyzer into approving a malicious registry change.</td>
+            <td>Malicious skills accepted by ClawHub's detector, Cisco's skill scanner, and the three scanners integrated into skills.sh.</td>
+            <td class="num">5 of 5 scanners bypassed<small>three of the four skills built in under an hour</small></td>
+          </tr>
+          <tr>
+            <th>Poise<span class="id">arXiv:2606.07943 · Jun 2026</span></th>
+            <td>One benign-looking, command-bearing instruction placed at a structurally plausible position in the skill body.</td>
+            <td>Attack success = the malicious action completes in a sandbox <em>and</em> the user's task still passes its verifier. Alerts measured under the SkillTester audit.</td>
+            <td class="num">89.3% ASR<small>only 5.6% of variants gain a new high-risk alert; the four LLM judges falsely flag 74.6% of clean skills</small></td>
+          </tr>
+          <tr>
+            <th>SkillCamo, “Seeing Is Not Screening”<span class="id">arXiv:2606.18198 · Jun 2026</span></th>
+            <td>Malicious instructions hidden in images bundled with the skill; the documentation references the images as part of the normal workflow.</td>
+            <td>Scanners that read text, manifests and code only; the multimodal agent recovers the instruction at execution time.</td>
+            <td class="na">no rate in the abstract; “challenge existing skill scanners”</td>
+          </tr>
+          <tr>
+            <th>PhantomSkill / VulMask<span class="id">arXiv:2606.19191 · Jun 2026</span></th>
+            <td>Overt malicious scripts rewritten as vulnerability-shaped code in the skill's auxiliary resources, activated only under attacker-controlled triggers.</td>
+            <td>Warning- and malware-level detection by automated reviewers, compared with the overt script.</td>
+            <td class="na">no rate in the abstract; “reducing warning and malware-level detection”</td>
+          </tr>
+          <tr>
+            <th>SkillCloak, “Cloak and Detonate”<span class="id">arXiv:2607.02357 · Jul 2026</span></th>
+            <td>Structural obfuscation (payload indicators rewritten into equivalent forms) and self-extracting skill packing (malicious parts hidden at install time, restored at execution).</td>
+            <td>Scanner returns a clean verdict. Eight scanners, 1,613 in-the-wild malicious skills.</td>
+            <td class="num">&gt;90% bypass, every scanner<small>self-extracting packing; structural obfuscation &gt;80% on most static scanners, 96% on a hybrid scanner</small></td>
+          </tr>
+          <tr>
+            <th>ColluSkill<span class="id">arXiv:2608.09732 · Aug 2026</span></th>
+            <td>One malicious intent split into interdependent sub-payloads across separately packaged skills; LLM chain planning refined against scanner feedback.</td>
+            <td>Average attack success across six representative skill scanners that inspect one skill at a time.</td>
+            <td class="num">96.0% ASR<small>their ChainGuard defense brings it to 22.5% while passing 99.5% of benign workflows</small></td>
+          </tr>
+          <tr>
+            <th>CompoSkill<span class="id">arXiv:2608.16246 · Aug 2026</span></th>
+            <td>Chains of individually scanner-passing marketplace skills whose combined outputs and side effects form a risky composition; white-box and black-box attackers.</td>
+            <td>Chain Formation Rate on CompoSkill-Bench, 1,140 records, OpenClaw and Nanobot; scanners “block only a limited fraction”.</td>
+            <td class="num">83.3% CFR white-box<small>80.6% black-box; success decays once a chain exceeds three skills</small></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="detectors">
+    <h2><span class="n">03</span> Detectors: how often the scanner says “malicious”</h2>
+    <div class="cmp-wrap">
+      <table class="cmp">
+        <thead>
+          <tr><th>Detector · paper</th><th>Approach</th><th>What is counted</th><th>Reported rate</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>SkillsMetric<span class="id">arXiv:2608.08468 · Aug 2026</span></th>
+            <td>Static, five stages: pattern density, statistical anomaly, dataflow taint, import anomaly, capability mismatch.</td>
+            <td>2,266 adversarial skills across 16 attack types, plus the SkillMD-138K corpus.</td>
+            <td class="num">AUC 0.93 · F1 73.4%<small>exfiltration 93%, steganographic payloads 93%; host destruction via common shell commands 0%; natural-language prompt injection 42%</small></td>
+          </tr>
+          <tr>
+            <th>SkillVetBench<span class="id">arXiv:2606.15899 · Jun 2026</span></th>
+            <td>LLM-as-judge with a five-dimensional agentic risk score; public leaderboard.</td>
+            <td>78 confirmed-malicious skills and 22 benign controls; comparison with static tools on instruction-layer threats.</td>
+            <td class="num">0 false negatives, 0 false positives<small>best static baseline misses 15%; conventional tools miss 89–100% of instruction-layer threats; detection ranges 35–95% across four LLM evaluators</small></td>
+          </tr>
+          <tr>
+            <th>Locate-and-Judge<span class="id">arXiv:2606.23416 · Jun 2026</span></th>
+            <td>Attention-based locator keeps the top-K instruction-following spans; an LLM judge examines only those.</td>
+            <td>Marketplace-scale deployment; precision confirmed manually on flagged skills.</td>
+            <td class="num">order-of-magnitude cheaper than full LLM scanning<small>surfaces dozens of live malicious skills, many missed by SkillSpector and Cisco Skill Scanner; no rate in the abstract</small></td>
+          </tr>
+          <tr>
+            <th>SkillGate<span class="id">arXiv:2607.25619 · Jul 2026</span></th>
+            <td>Regex prefilter, then an LLM judge that sees only the matched snippets.</td>
+            <td>SkillsBench, 1,650 skills, 9.1% malicious; compared with two existing tools.</td>
+            <td class="num">F1 0.817 · FPR 1.13%<small>AUPRC 0.830 vs 0.144 and 0.162 for the two tools; 77% fewer LLM input tokens</small></td>
+          </tr>
+          <tr>
+            <th>SkillDetonate, “Cloak and Detonate”<span class="id">arXiv:2607.02357 · Jul 2026</span></th>
+            <td>Runtime auditor: executes the skill in a sandbox and tracks sensitive-data flows across context, files, processes and network.</td>
+            <td>Attacks detected, including the SkillCloak evasions above, and on real-world malicious skills.</td>
+            <td class="num">97% detection at 2% FPR<small>87% on real-world malicious skills</small></td>
+          </tr>
+          <tr>
+            <th>SkillSentry<span class="id">arXiv:2608.03485 · Aug 2026</span></th>
+            <td>Dynamic testing in adaptive LLM-simulated “honey worlds” with decoy resources; compares skill-enabled and no-skill trajectories.</td>
+            <td>Standard benchmarks, then semantics-preserving evasion; seven scanner configurations as baselines.</td>
+            <td class="num">99.50% recall · 96.26% F1<small>92.95% F1 under semantics-preserving evasion vs 80.07% for the strongest baseline</small></td>
+          </tr>
+          <tr>
+            <th>ChainGuard, from ColluSkill<span class="id">arXiv:2608.09732 · Aug 2026</span></th>
+            <td>Context-aware chain scanner: analyzes a candidate skill together with the skills already installed.</td>
+            <td>ColluSkill attack success after the defense; benign workflows still passing.</td>
+            <td class="num">ASR 96.0% → 22.5%<small>99.5% of benign workflows pass</small></td>
+          </tr>
+          <tr>
+            <th>SkillSecurer<span class="id">arXiv:2609.14079 · Sep 2026</span></th>
+            <td>Red agent injects nine threat types and records the change; blue agent detects, localises and patches; a verifier compares them.</td>
+            <td>Injection-level detection on controlled instances; then popular skills from skills.sh.</td>
+            <td class="num">100% injection detection<small>with its best backend; latent vulnerabilities in more than 17% of the skills.sh skills examined</small></td>
+          </tr>
+          <tr>
+            <th>Registry reality, “Scan the Skill, Govern the Action”<span class="id">arXiv:2609.12001 · Sep 2026</span></th>
+            <td>Measurement over ClawHub rather than a new scanner.</td>
+            <td>66,192 public ClawHub skill versions; agreement between the registry's scanners; skills every scanner rates clean.</td>
+            <td class="num">scanners overlap on ≤10.4% of positives<small>81.9% of flagged skills caught by one scanner alone, as reported by OpenClaw's security team; 705 skills rated clean by every scanner still instruct an action CIS and NIST controls prohibit; 92% precision on a hand audit of 100</small></td>
+          </tr>
+          <tr>
+            <th>Baseline: “Do Not Mention This to the User”<span class="id">arXiv:2602.06547 · Feb 2026</span></th>
+            <td>Static pattern matching plus dynamic behavioral verification over two registries.</td>
+            <td>Confirmed malicious skills among 98,380 collected.</td>
+            <td class="num">157 malicious of 98,380<small>632 vulnerabilities across 13 techniques, 4.03 per skill on average; over half from one actor; all 157 removed after disclosure</small></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="reading">
+    <h2><span class="n">04</span> How to read the numbers</h2>
+    <p class="body"><strong>They are not one scale.</strong> Poise's 89.3% requires the attack to complete <em>and</em> the user's task to pass. SkillCloak's “over 90%” is a scanner returning a clean verdict on a known-malicious skill. CompoSkill's 83.3% is a risky chain forming, whether or not it is later blocked. On the detector side, F1, recall and AUC each hide a different trade-off, and each paper scores itself on its own dataset. Read a row's third column before its fourth.</p>
+    <p class="body"><strong>The pattern is consistent anyway.</strong> Anything that judges a skill by its appearance — patterns, signatures, one skill at a time — is beaten by attacks that keep the meaning and change the form, or that spread the meaning across several files. The detectors that report the highest rates do one of three things: they run the skill (SkillDetonate, SkillSentry), they look at the whole installed set (ChainGuard), or they ask a language model to judge intent. That last option carries its own numbers: detection from 35% to 95% depending on which model judges, and in Poise's audit, four LLM judges flagging 74.6% of <em>clean</em> skills as risky.</p>
+    <p class="body"><strong>Registries confirm it from the inside.</strong> On ClawHub the scanners agree on at most 10.4% of what they flag, and 705 skills that every scanner rated clean still instruct an action that baseline security controls prohibit. This is not a failure of one product; it is what OWASP's Agentic Skills Top 10 lists as <em>AST08 — Poor Scanning</em>: relying on the scan as the boundary.</p>
+    <p class="body"><strong>What this means in practice</strong> is unchanged from the main page: scanning is a filter that removes the careless attacker, and the boundary has to be provenance, least privilege, and a human on irreversible actions. See <a href="/#reducing-the-risk">reducing the risk</a>.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">05</span> Frequently asked questions</h2>
+
+    <div class="qa">
+      <h3>Are these percentages comparable with each other?</h3>
+      <p>No. Each paper defines its own success condition: Poise counts an attack only if the malicious action completes and the user's task still passes, SkillCloak counts a scanner returning a clean verdict, CompoSkill counts a risky chain forming, and the detectors report F1 or recall on their own datasets. The table keeps the definitions next to the numbers for that reason.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Is there a scanner that catches skill injection?</h3>
+      <p>Not from appearance alone. The detectors that report the highest rates in 2026 either execute the skill in a sandbox, inspect the whole set of installed skills together, or rely on an LLM judge whose detection rate varies from 35% to 95% depending on the model. Static pattern analysis reports 0% on host-destruction payloads built from ordinary shell commands and 42% on natural-language prompt injection.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Which scanners have been bypassed in published work?</h3>
+      <p>Trail of Bits bypassed ClawHub's malicious-skill detector, Cisco's skill scanner, and all three scanners integrated into skills.sh. SkillCloak reports bypassing eight scanners, ColluSkill six, and Locate-and-Judge surfaces live malicious skills that SkillSpector and Cisco Skill Scanner fail to detect. Most academic papers do not name the commercial scanners they tested.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Where do these numbers come from?</h3>
+      <p>From the authors' own abstracts on arXiv and from the Trail of Bits post, each checked against the arXiv abstract page and the arXiv API on 20 September 2026. Nothing here was reproduced independently; the page reports what the authors claim and what they measured.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">06</span> Related</h2>
+    <a class="ref" href="https://skillinjection.com/" rel="noopener">
+      <span class="arrow">↗</span>
+      <span class="id">skillinjection.com</span>
+      <div class="ti">Skill injection — the full definition</div>
+      <div class="me">What skill injection is, how it differs from prompt injection and supply-chain attacks, and how to reduce the risk.</div>
+    </a>
+    <a class="ref" href="https://sleeperattack.com/" rel="noopener">
+      <span class="arrow">↗</span>
+      <span class="id">sleeperattack.com</span>
+      <div class="ti">Sleeper attack</div>
+      <div class="me">A planted instruction that lies dormant in an LLM agent's memory and triggers later on an unrelated event.</div>
+    </a>
+  </section>
+
+  <section>
+    <h2><span class="n">07</span> Sources</h2>
+    <div class="lit">
+      <a href="https://blog.trailofbits.com/2026/06/03/the-sorry-state-of-skill-distribution/" target="_blank" rel="noopener">
+        <span class="dt">Jun 2026</span>
+        <span>
+          <span class="ti">The sorry state of skill distribution</span>
+          <span class="me"><span class="id">Trail of Bits</span> — Judson &amp; Hess. ClawHub's detector, Cisco's scanner and the three skills.sh scanners bypassed with four malicious skills.</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2602.06547" target="_blank" rel="noopener">
+        <span class="dt">Feb 2026</span>
+        <span>
+          <span class="ti">“Do Not Mention This to the User”: Detecting and Understanding Malicious Agent Skills in the Wild</span>
+          <span class="me"><span class="id">arXiv:2602.06547</span> — 157 malicious skills among 98,380 across two registries.</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2606.07943" target="_blank" rel="noopener">
+        <span class="dt">Jun 2026</span>
+        <span>
+          <span class="ti">Poise: Position-Aware One-Instruction Skill Injection for Silent Execution on LLM Agents</span>
+          <span class="me"><span class="id">arXiv:2606.07943</span> — 89.3% ASR; 5.6% new high-risk alerts.</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2606.15899" target="_blank" rel="noopener">
+        <span class="dt">Jun 2026</span>
+        <span>
+          <span class="ti">SkillVetBench: LLM-as-Judge for Multi-Dimensional Security Risk Evaluation in Open-Source LLM Agent Skills</span>
+          <span class="me"><span class="id">arXiv:2606.15899</span> — detection from 35% to 95% across four LLM evaluators.</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2606.18198" target="_blank" rel="noopener">
+        <span class="dt">Jun 2026</span>
+        <span>
+          <span class="ti">Seeing Is Not Screening: Multimodal Hidden Instruction Attacks on Agent Skill Scanners</span>
+          <span class="me"><span class="id">arXiv:2606.18198</span> — SkillCamo and the ExecScan defense.</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2606.19191" target="_blank" rel="noopener">
+        <span class="dt">Jun 2026</span>
+        <span>
+          <span class="ti">PhantomSkill: Malicious Code Injection in Agent Skill Ecosystems</span>
+          <span class="me"><span class="id">arXiv:2606.19191</span> — VulMask: malicious scripts rewritten as vulnerability-shaped code.</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2606.23416" target="_blank" rel="noopener">
+        <span class="dt">Jun 2026</span>
+        <span>
+          <span class="ti">Detecting Malicious Agent Skills in the Wild using Attention</span>
+          <span class="me"><span class="id">arXiv:2606.23416</span> — Locate-and-Judge, marketplace-scale detection.</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2607.02357" target="_blank" rel="noopener">
+        <span class="dt">Jul 2026</span>
+        <span>
+          <span class="ti">Cloak and Detonate: Scanner Evasion and Dynamic Detection of Agent Skill Malware</span>
+          <span class="me"><span class="id">arXiv:2607.02357</span> — SkillCloak (&gt;90% bypass) and SkillDetonate (97% detection).</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2607.25619" target="_blank" rel="noopener">
+        <span class="dt">Jul 2026</span>
+        <span>
+          <span class="ti">SkillGate: Cost Efficient Runtime Malicious Skill File Detection in Coding Agents</span>
+          <span class="me"><span class="id">arXiv:2607.25619</span> — F1 0.817, FPR 1.13% on SkillsBench.</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2608.03485" target="_blank" rel="noopener">
+        <span class="dt">Aug 2026</span>
+        <span>
+          <span class="ti">SkillSentry: Adaptive Honey Worlds for Dynamic Safety Testing of Agent Skills</span>
+          <span class="me"><span class="id">arXiv:2608.03485</span> — 99.50% recall; 92.95% F1 under evasion.</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2608.08468" target="_blank" rel="noopener">
+        <span class="dt">Aug 2026</span>
+        <span>
+          <span class="ti">SkillsMetric: Mapping the Detection Boundary of Static Analysis for Malicious Agent Skills</span>
+          <span class="me"><span class="id">arXiv:2608.08468</span> — AUC 0.93; 0% on host destruction, 42% on prompt injection.</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2608.09732" target="_blank" rel="noopener">
+        <span class="dt">Aug 2026</span>
+        <span>
+          <span class="ti">ColluSkill: Adversarial Cross-Skill Composition for Evading Agent Skill Scanners</span>
+          <span class="me"><span class="id">arXiv:2608.09732</span> — 96.0% ASR; ChainGuard brings it to 22.5%.</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2608.16246" target="_blank" rel="noopener">
+        <span class="dt">Aug 2026</span>
+        <span>
+          <span class="ti">CompoSkill: Compositional Skill Chain Attacks from Individually Scanner-Passing LLM Agent Skills</span>
+          <span class="me"><span class="id">arXiv:2608.16246</span> — chain formation up to 83.3%.</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2609.12001" target="_blank" rel="noopener">
+        <span class="dt">Sep 2026</span>
+        <span>
+          <span class="ti">Scan the Skill, Govern the Action: Composing Registry Verdicts with Runtime Consequence Control</span>
+          <span class="me"><span class="id">arXiv:2609.12001</span> — 66,192 ClawHub versions; scanners overlap on ≤10.4% of positives.</span>
+        </span>
+      </a>
+      <a href="https://arxiv.org/abs/2609.14079" target="_blank" rel="noopener">
+        <span class="dt">Sep 2026</span>
+        <span>
+          <span class="ti">SkillSecurer: Detecting and Patching Prompt-Injection Vulnerabilities in AI Agent Skills</span>
+          <span class="me"><span class="id">arXiv:2609.14079</span> — 100% injection detection with its best backend.</span>
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div>skillinjection.com — a plain-language reference for a developing attack class.</div>
+    <div>Maintained independently. Corrections and additions welcome via <a href="https://github.com/Arlenjim/skillinjection/issues">GitHub Issues</a>.</div>
+    <div>Published 20 September 2026 · Updated 20 September 2026</div>
+    <p class="disc">This page summarizes published research for awareness and does not provide exploit code. Every figure is the authors' own claim as stated in their abstract or post; none was reproduced here. Corrections from authors are welcome and will be applied with attribution.</p>
+  </footer>
+
+</div>
+</body>
+</html>

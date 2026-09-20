@@ -145,3 +145,16 @@
   @media(max-width:560px){
     .lit>a,.lit>.item{grid-template-columns:1fr;gap:5px}
   }
+
+  /* ---- comparison tables (added 2026-09-20 for /skill-scanner-evasion/) ---- */
+  .cmp-wrap{overflow-x:auto;margin-top:8px}
+  .cmp{width:100%;border-collapse:collapse;min-width:640px}
+  .cmp th,.cmp td{text-align:left;vertical-align:top;padding:14px 14px;border-bottom:1px solid var(--line)}
+  .cmp thead th{color:#fff;font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+  .cmp tbody th{color:#fff;font-weight:500;font-size:13.5px;line-height:1.4}
+  .cmp tbody th .id{display:block;color:var(--sig);font-size:11px;letter-spacing:.06em;margin-top:4px;font-weight:400}
+  .cmp tbody td{color:var(--ink);font-family:var(--serif);font-size:15px;line-height:1.5}
+  .cmp tbody td.num{font-family:var(--mono);color:#fff;font-size:13.5px;min-width:190px}
+  .cmp tbody td.num small{display:block;color:var(--dim);font-size:11px;margin-top:3px}
+  .cmp tbody td.na{color:var(--faint);font-style:italic}
+  .cmp tbody tr:hover td,.cmp tbody tr:hover th{background:var(--panel)}
