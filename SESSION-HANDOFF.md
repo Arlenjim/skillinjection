@@ -35,7 +35,10 @@ Précédée d'une PR de contribution pure vers
 2. Home enrichie : 7 papiers 2026 (section 09), paragraphe section 04, phrase
    Trail of Bits corrigée et liée, dates au 2026-09-20. Déploiement prouvé.
 3. Search Console : sitemap re-soumis, indexation de la home demandée
-   (confirmation affichée).
+   (confirmation affichée). **Le sitemap a été lu par Google dans l'heure**
+   (« Opération effectuée », 1 page). Après relance de Chrome par Damien :
+   sitemap re-soumis une seconde fois (2 URL) et **indexation de
+   `/skill-scanner-evasion/` demandée**, confirmation affichée.
 4. **Nouvelle page `/skill-scanner-evasion/`** (`5e374e2`) : deux tableaux —
    attaques (taux d'évasion) et détecteurs (taux de détection) — pour 14
    papiers + Trail of Bits, chaque chiffre pris dans le résumé arXiv et
@@ -66,14 +69,6 @@ Précédée d'une PR de contribution pure vers
 Sites en ligne à jour, prouvé par empreinte.
 
 ## Reste à faire
-
-**Non fait ce jour, à faire dès que l'extension Chrome est reconnectée :**
-- [ ] Search Console : **demander l'indexation de
-      `https://skillinjection.com/skill-scanner-evasion/`** et **re-soumettre
-      `sitemap.xml`** (il a maintenant 2 URL). L'extension s'est déconnectée
-      pendant la construction de la page ; sans elle, Damien le fait à la
-      main (inspection d'URL → « Demander une indexation » ; Sitemaps →
-      `sitemap.xml` → Envoyer).
 
 **À relire (2–3 semaines) :**
 - [ ] Rapport Pages : home revenue dans l'index ? nouvelle page indexée ?
