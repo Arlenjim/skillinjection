@@ -5,119 +5,100 @@ décisions prises ailleurs vivent dans le Brain (`seo-attack-pages`), pas ici.
 
 ---
 
-## Session du 2026-08-26 (2e session du jour)
+## Session du 2026-09-20
 
-**Sujet :** pourquoi les workflows « pages build and deployment » échouent sur
-les deux dépôts alors que les sites sont en ligne et à jour.
+**Sujet :** « faire vivre la page » skillinjection.com — déblocage du
+déploiement, enrichissement du contenu, Search Console. Précédée d'une PR de
+contribution pure vers `LLMSecurity/awesome-agent-skills-security` (#70).
 
 ### Ce qui a été établi (prouvé, pas supposé)
 
-**Aucun workflow custom n'existait.** `.github/` était absent des deux dépôts
-(404 sur l'API). Un seul workflow enregistré : `pages-build-deployment`, chemin
-`dynamic/pages/…` — généré par GitHub, sans fichier correspondant. Il n'est ni
-éditable ni supprimable sans désactiver Pages : il **est** le déploiement.
+- **Search Console (lu par Claude via l'extension Chrome, compte connecté)** :
+  la page a été **indexée du ~16/08 au ~03/09 puis éjectée** (« Explorée,
+  actuellement non indexée »). Dernière exploration 19/09, tout est autorisé :
+  jugement de valeur, pas blocage technique. 3 mois : 236 impressions, 6
+  clics, position moyenne 7,2, requête principale « skill injection ».
+- **Le sitemap n'avait jamais été lu** (soumis 17/08, « Impossible de
+  récupérer », 0 page), bien que servi en 200 `application/xml`.
+- **Builds Pages bloqués 25 jours** sur les deux dépôts après la panne du
+  26/08. Débloqués par `gh api -X POST repos/<owner>/<repo>/pages/builds`.
+- **sleeperattack.com n'est pas une propriété validée** dans la Search
+  Console du compte.
 
-**Les échecs avaient deux causes distinctes, aucune liée au contenu.**
+Détail dans `SEO-PROCESS.md`, « Constats de terrain (2026-09-20) ».
 
-1. **2026-08-17 (#6/#7/#8) — échec *après* un déploiement réussi.** Le workflow
-   enchaîne `build` → `deploy` → `report-build-status`. Cette dernière étape ne
-   fait qu'envoyer une statistique à `repos/…/pages/telemetry`. Log littéral :
-   `CONCLUSION: success`, puis `HTTP 503`, puis `exit 1`. Le run passe en échec
-   alors que le site est déjà publié. Simultané sur les deux dépôts à 17:59:15,
-   depuis deux régions Azure différentes → panne côté GitHub.
-2. **2026-08-26 (#12/#13) — panne majeure d'Actions.** Incident `critical`
-   ouvert à 15:11:58 UTC (`Actions=major_outage`). Le push de 15:26 est tombé
-   14 min après. Les jobs n'ont jamais démarré et ont été tués à **15 min
-   pile** (timeout) → `startup_failure`. Ici le déploiement n'a **pas** eu lieu.
+### Ce qui a été fait (et vérifié)
 
-**Les deux sites étaient bien à jour**, vérifié par empreinte MD5 (contenu servi
-vs contenu du commit) : 3/3 fichiers sur skillinjection, 3/3 sur sleeperattack.
+1. Pages débloqué ; 3 commits en attente poussés sur `skillinjection` ;
+   `sleeperattack` reconstitué (workflow + `SEO-PROCESS.md`, identiques octet
+   pour octet, md5 vérifié) et poussé. **Premier run réel de
+   `verifier-mise-en-ligne.yml` : `success` sur les deux dépôts.**
+2. `index.html` : 7 papiers 2026 ajoutés en section 09, chacun vérifié sur
+   `arxiv.org/abs` **et** l'API `id_list` ; nouveau paragraphe en section 04
+   (CompoSkill, SkillCloak, SkillCamo, chiffres ClawHub) ; phrase Trail of
+   Bits corrigée (ClawHub, Cisco, skills.sh — pas « trois marketplaces ») et
+   liée ; `dateModified` / footer / `sitemap.xml` au 2026-09-20. Checklist
+   du process passée par script (JSON-LD, FAQ == visible, title, h1,
+   canonical). Rendu vérifié dans Chrome via serveur local. Déploiement
+   prouvé : workflow vert + 3/3 empreintes servi == commit.
+3. Search Console : `sitemap.xml` **re-soumis** (colonne « URL envoyées » au
+   20 sept.), **indexation demandée** (confirmation « Indexation demandée »
+   affichée). Les deux sur GO explicite de Damien (délégation totale).
+4. `SEO-PROCESS.md` mis à jour dans les deux dépôts (constats 2026-09-20,
+   procédure Search Console via Chrome, références vérifiées).
 
-### Décision structurelle
+## État des dépôts
 
-**Un HTTP 200 ne prouve pas qu'un site est à jour.** Pages continue de servir la
-dernière version construite avec succès : un build raté donne un site en ligne,
-au contenu périmé, qui répond 200 partout. Toute vérification de déploiement
-compare désormais le **contenu servi** au **contenu du commit** — jamais un code
-de statut. Consigné dans `SEO-PROCESS.md`, section « Constats de terrain
-(2026-08-26) », répliqué dans les deux dépôts.
-
-### Ce qui a été construit
-
-`.github/workflows/verifier-mise-en-ligne.yml` — identique octet pour octet dans
-les deux dépôts (md5 `de512f58`), le domaine étant lu dans `CNAME`.
-
-À chaque push touchant le site, il compare l'empreinte de chaque `.html`/`.css`/
-`.xml` du commit à celle du fichier réellement servi, et ne devient rouge que si
-l'écart persiste après 10 minutes. Deux contraintes posées par Damien, tenues :
-`paths-ignore: ['**.md']` (un push de doc ne déclenche rien) et lisibilité par
-un non-développeur (commentaires en français, pas d'astuce shell).
-
-**Défaut rattrapé par le test :** la première version comparait le fichier **sur
-le disque**. Avec `core.autocrlf=true`, git réécrit les fins de ligne à la copie
-→ 4 faux positifs sur 4 fichiers dans sleeperattack, sans qu'aucun contenu
-n'ait changé. Corrigé : la référence est lue dans le commit
-(`git show HEAD:<fichier>`). Sur runner Ubuntu le défaut ne se serait pas
-manifesté ce jour-là, mais un `.gitattributes` aurait suffi à le réveiller.
-
-Tests exécutés : YAML parse · `bash -n` · les deux sites réels (sortie 0) ·
-fichier du commit absent du site → 404 annoncé dès la tentative 1 (sortie 1).
-
-## État du dépôt
-
-Branche `main`, **2 commits locaux non poussés** dans chacun des deux dépôts :
+Branche `main` des deux dépôts = `origin/main`, rien en attente.
 
 | | skillinjection | sleeperattack |
 |---|---|---|
-| leçon `SEO-PROCESS.md` | `0511517` | `5f3cf26` |
-| workflow de contrôle | `8377bd4` | `eeea0a7` |
+| contenu 2026-09-20 | `67762a7` | — |
+| constats 2026-09-20 | dernier commit | dernier commit |
+| workflow de contrôle | `8377bd4` | `cdf7610` |
 
-**Rien n'est poussé** : Damien a demandé que les commits partent seulement une
-fois l'incident GitHub clos. À la clôture, `Actions=major_outage` toujours, et
-les builds Pages des deux dépôts encore bloqués en `building` depuis 15:26 UTC
-(Pages lui-même était repassé `operational`).
-
-⚠️ **Le clone de `sleeperattack` était dans le scratchpad de session — ses deux
-commits sont donc perdus.** Rien d'irrécupérable : les deux artefacts sont
-identiques dans `skillinjection`, qui est en sécurité. Pour reconstituer :
-cloner `sleeperattack`, y copier `.github/workflows/verifier-mise-en-ligne.yml`
-tel quel depuis `skillinjection`, et reporter le bloc « Un HTTP 200 ne prouve
-pas… » de `SEO-PROCESS.md` (les deux fichiers doivent rester identiques octet
-pour octet — le vérifier par `md5sum` avant de commiter).
+Sites en ligne à jour, prouvé par empreinte (3/3 sur skillinjection après le
+push de contenu ; sleeperattack inchangé, workflow vert).
 
 ## Reste à faire
 
-**Bloqué sur l'état de GitHub :**
-- [ ] Vérifier que l'incident Actions est clos et que les builds Pages ne sont
-      plus `building` sur les deux dépôts. S'ils sont toujours bloqués bien
-      après la fin de l'incident, re-déclencher par un commit vide.
-- [ ] Reconstituer le clone `sleeperattack` (procédure ci-dessus).
-- [ ] Pousser les deux commits sur les deux dépôts, **ensemble**. Le push
-      contient le `.yml`, donc le nouveau workflow se déclenchera sur lui-même :
-      première validation réelle, sur des fichiers déjà en ligne → doit passer
-      au vert. Prévenir Damien avec le résultat de ce run.
+**À relire (2–3 semaines, via Chrome ou par Damien) :**
+- [ ] Rapport Pages de skillinjection.com : la page est-elle revenue dans
+      l'index après la demande du 2026-09-20 ?
+- [ ] Sitemaps : la colonne « Dernière lecture » s'est-elle remplie ? Si
+      toujours « Impossible de récupérer », creuser (test « URL active »,
+      en-têtes servis à Googlebot).
 
 **Bloqué sur Damien :**
-- [ ] Rendu mobile de skillinjection.com section 09 sous 560 px — toujours non
-      vérifié (reporté de la session précédente).
-- [ ] Demander l'indexation de skillinjection.com dans Search Console.
+- [ ] Valider la propriété `https://sleeperattack.com/` dans Search Console
+      (bouton « Valider la propriété » — action de compte).
+- [ ] Rendu mobile de skillinjection.com section 09 sous 560 px — toujours
+      non vérifié (reporté depuis le 2026-08-17 ; la section a 7 entrées de
+      plus depuis ce jour).
 
 **Proposé, sans GO à ce jour :**
-- [ ] Contrôle de fraîcheur **hors GitHub** (cron local ou service tiers). Le
-      workflow ci-dessus tourne sur Actions : pendant une panne Actions il ne
-      donne ni vert ni rouge. Il couvre « le déploiement a échoué en silence »,
-      pas « GitHub est cassé ».
-- [ ] Bootstrap restant du projet : CLAUDE.md projet, template Bureau
-      `SEO-ATTACK-PAGES-REPRISE.txt` (aucun n'existe aujourd'hui).
+- [ ] Page « vs » #1 « skill injection vs prompt injection » : la décision
+      d'août (attendre des impressions) a maintenant des données — 236
+      impressions en 3 mois, quasi toutes sur « skill injection » et des noms
+      de papiers, aucune sur « vs prompt injection ». À arbitrer sur ces
+      chiffres.
+- [ ] Section 09 : proposition de ne plus ajouter d'entrée sans en retirer
+      une, ou d'ouvrir une page dédiée (page à 2 273 mots, cible 1 200–2 000).
+- [ ] Contrôle de fraîcheur hors GitHub (cron local ou service tiers).
+- [ ] Bootstrap restant : CLAUDE.md projet, template Bureau
+      `SEO-ATTACK-PAGES-REPRISE.txt`.
 
 ## Comment reprendre
 
 1. Lire ce fichier, puis `C:\brain\projets\seo-attack-pages\STATE.md` et son
    dernier fichier `sessions/`.
-2. `git log -3` + `git status` dans `Projects/skillinjection` — attendre
-   `ahead 2` sur `main`, rien de poussé.
-3. Vérifier l'état de GitHub avant toute action :
-   `curl -s https://www.githubstatus.com/api/v2/summary.json` et
-   `gh api repos/Arlenjim/<repo>/pages --jq .status`.
+2. `git log -3` + `git status` dans `Projects/skillinjection` et
+   `Projects/sleeperattack` — attendre `main` == `origin/main` des deux côtés.
+3. Search Console : ouvrir via l'extension Chrome (compte Google de Damien
+   connecté), lire Pages + Sitemaps. Toute saisie passe par `form_input` sur la
+   référence du champ, jamais par la frappe simulée (ignorée par les champs
+   Angular Material).
 4. Ne jamais conclure qu'un site est à jour depuis un code HTTP : comparer
-   l'empreinte du contenu servi à celle du commit.
+   l'empreinte du contenu servi à celle du commit, ou lire le run du workflow.
+5. Builds Pages coincés en `building` : `gh api -X POST
+   repos/Arlenjim/<repo>/pages/builds`, pas de commit vide.
