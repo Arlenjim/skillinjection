@@ -38,7 +38,7 @@
       ],
       "inLanguage": "en",
       "datePublished": "2026-09-20",
-      "dateModified": "2026-09-20",
+      "dateModified": "2026-09-22",
       "author": { "@type": "Organization", "name": "skillinjection.com" },
       "publisher": { "@type": "Organization", "name": "skillinjection.com" }
     },
@@ -54,7 +54,7 @@
         {
           "@type": "Question",
           "name": "Is there a scanner that catches skill injection?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Not from appearance alone. The detectors that report the highest rates in 2026 either execute the skill in a sandbox, inspect the whole set of installed skills together, or rely on an LLM judge whose detection rate varies from 35% to 95% depending on the model. Static pattern analysis reports 0% on host-destruction payloads built from ordinary shell commands and 42% on natural-language prompt injection." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Not from appearance alone. The detectors that report the highest rates in 2026 either execute the skill in a sandbox, inspect the whole set of installed skills together, or rely on an LLM judge whose detection rate varies from 35% to 95% depending on the model. The one paper that maps where static pattern analysis stops, SkillsMetric, carries a caution from its first author that its static-detection figures are preliminary." }
         },
         {
           "@type": "Question",
@@ -163,8 +163,8 @@
           <tr>
             <th>SkillsMetric<span class="id">arXiv:2608.08468 · Aug 2026</span></th>
             <td>Static, five stages: pattern density, statistical anomaly, dataflow taint, import anomaly, capability mismatch.</td>
-            <td>2,266 adversarial skills across 16 attack types, plus the SkillMD-138K corpus.</td>
-            <td class="num">AUC 0.93 · F1 73.4%<small>exfiltration 93%, steganographic payloads 93%; host destruction via common shell commands 0%; natural-language prompt injection 42%</small></td>
+            <td>Two static-detection evaluations on different datasets: 2,266 adversarial skills across 16 attack types, and the SkillMD-138K corpus.</td>
+            <td class="num">AUC 0.93 · F1 73.4% (preliminary)<small>its first author, Xinze Chen, told this site in September 2026 that the experimental section is incomplete, that the two evaluations rest on different and possibly overlapping datasets, that the results are therefore not particularly rigorous, and that the attack methods are offered as hypotheses. No per-attack-type figure is shown for that reason.</small></td>
           </tr>
           <tr>
             <th>SkillVetBench<span class="id">arXiv:2606.15899 · Jun 2026</span></th>
@@ -243,7 +243,7 @@
 
     <div class="qa">
       <h3>Is there a scanner that catches skill injection?</h3>
-      <p>Not from appearance alone. The detectors that report the highest rates in 2026 either execute the skill in a sandbox, inspect the whole set of installed skills together, or rely on an LLM judge whose detection rate varies from 35% to 95% depending on the model. Static pattern analysis reports 0% on host-destruction payloads built from ordinary shell commands and 42% on natural-language prompt injection.</p>
+      <p>Not from appearance alone. The detectors that report the highest rates in 2026 either execute the skill in a sandbox, inspect the whole set of installed skills together, or rely on an LLM judge whose detection rate varies from 35% to 95% depending on the model. The one paper that maps where static pattern analysis stops, SkillsMetric, carries a caution from its first author that its static-detection figures are preliminary.</p>
     </div>
 
     <div class="qa">
@@ -350,7 +350,7 @@
         <span class="dt">Aug 2026</span>
         <span>
           <span class="ti">SkillsMetric: Mapping the Detection Boundary of Static Analysis for Malicious Agent Skills</span>
-          <span class="me"><span class="id">arXiv:2608.08468</span> — AUC 0.93; 0% on host destruction, 42% on prompt injection.</span>
+          <span class="me"><span class="id">arXiv:2608.08468</span> — AUC 0.93, F1 73.4%; static-detection figures preliminary, per its first author.</span>
         </span>
       </a>
       <a href="https://arxiv.org/abs/2608.09732" target="_blank" rel="noopener">
@@ -387,7 +387,7 @@
   <footer>
     <div>skillinjection.com — a plain-language reference for a developing attack class.</div>
     <div>Maintained independently. Corrections and additions welcome via <a href="https://github.com/Arlenjim/skillinjection/issues">GitHub Issues</a>.</div>
-    <div>Published 20 September 2026 · Updated 20 September 2026</div>
+    <div>Published 20 September 2026 · Updated 22 September 2026</div>
     <p class="disc">This page summarizes published research for awareness and does not provide exploit code. Every figure is the authors' own claim as stated in their abstract or post; none was reproduced here. Corrections from authors are welcome and will be applied with attribution.</p>
   </footer>
 
