@@ -5,113 +5,118 @@ décisions prises ailleurs vivent dans le Brain (`seo-attack-pages`), pas ici.
 
 ---
 
-## Session du 2026-09-20
+## Session du 2026-09-22
 
-**Sujet :** « faire vivre la page » skillinjection.com — déblocage du
-déploiement, enrichissement, Search Console, puis construction de la première
-page dédiée du domaine pour rendre le site liable (route 1 du plan backlinks).
-Précédée d'une PR de contribution pure vers
-`LLMSecurity/awesome-agent-skills-security` (#70, en attente de revue).
+**Sujet :** première correction d'auteur reçue (SkillsMetric, arXiv 2608.08468)
+et appliquée sur `/skill-scanner-evasion/` ; relecture Search Console.
 
 ### Ce qui a été établi (prouvé, pas supposé)
 
-- **Search Console (lu via l'extension Chrome, compte connecté)** : la home a
-  été **indexée du ~16/08 au ~03/09 puis éjectée** (« Explorée, actuellement
-  non indexée »). Dernière exploration 19/09, tout autorisé : jugement de
-  valeur, pas blocage. 3 mois : 236 impressions, 6 clics, position 7,2.
-  Cause la plus probable : **aucun lien entrant connu de Google**.
-- **Le sitemap n'avait jamais été lu** (soumis 17/08, « Impossible de
-  récupérer », 0 page) bien que servi en 200.
-- **Builds Pages bloqués 25 jours** après la panne du 26/08 ; débloqués par
-  `gh api -X POST repos/<owner>/<repo>/pages/builds`.
-- **sleeperattack.com n'est pas une propriété validée** dans Search Console.
-- Détail et leçons dans `SEO-PROCESS.md`, « Constats de terrain (2026-09-20) ».
+- **Les deux URL sont dans l'index Google** (inspection d'URL en direct, via
+  l'extension Chrome) : la home est **revenue** dans l'index et
+  `/skill-scanner-evasion/` y est **entrée en moins de 48 h** (explorée le
+  20/09 à 20:36, juste après la demande). Le rapport Pages, daté du 18/09,
+  affiche encore 0 dans l'index et 3 « explorées, non indexées » (home en
+  https / http / www) : il est en retard sur l'inspection, pas contradictoire.
+- Sitemap lu le 20/09, 2 URL découvertes, « Opération effectuée ». Pas relu
+  depuis le changement de `lastmod` du 22/09.
+- Deux incohérences côté Google, à relire plutôt qu'à corriger : l'inspection
+  de la nouvelle page dit « Sitemaps : erreur de traitement temporaire » et
+  « aucune page d'origine détectée », alors que l'écran Sitemaps est vert.
+- Non prouvé : la date d'exploration de la home (le panneau de détail ne
+  s'ouvrait pas à l'écran ; la valeur lue dans le DOM était identique à celle
+  de l'autre URL, donc possiblement résiduelle).
+- PR OWASP #87 et PR awesome-list #70 : ouvertes, 0 revue, 0 commentaire.
 
 ### Ce qui a été fait (et vérifié)
 
-1. Pages débloqué ; commits en attente poussés ; `sleeperattack` reconstitué
-   (workflow + `SEO-PROCESS.md` identiques, md5 vérifié). Premier run réel de
-   `verifier-mise-en-ligne.yml` : `success` sur les deux dépôts.
-2. Home enrichie : 7 papiers 2026 (section 09), paragraphe section 04, phrase
-   Trail of Bits corrigée et liée, dates au 2026-09-20. Déploiement prouvé.
-3. Search Console : sitemap re-soumis, indexation de la home demandée
-   (confirmation affichée). **Le sitemap a été lu par Google dans l'heure**
-   (« Opération effectuée », 1 page). Après relance de Chrome par Damien :
-   sitemap re-soumis une seconde fois (2 URL) et **indexation de
-   `/skill-scanner-evasion/` demandée**, confirmation affichée.
-4. **Nouvelle page `/skill-scanner-evasion/`** (`5e374e2`) : deux tableaux —
-   attaques (taux d'évasion) et détecteurs (taux de détection) — pour 14
-   papiers + Trail of Bits, chaque chiffre pris dans le résumé arXiv et
-   vérifié page `abs` + API, avec la définition de succès à côté. FAQ (4) ==
-   JSON-LD caractère par caractère. Deux liens depuis le corps de la home,
-   ancre « skill scanner evasion ». Sitemap à 2 URL. Règles CSS `.cmp` en fin
-   de `style.css`. Rendu vérifié en Chrome headless (l'extension s'était
-   déconnectée), défaut de tableau attrapé et corrigé. Déploiement prouvé :
-   workflow `success`, 4/4 empreintes servi == commit, page en 200.
-5. `PREVISION-2026-09-20.md` : prévision datée (28 jours, trois scénarios,
-   probabilités), à confronter le 2026-10-20.
-6. **Route 2 exécutée** (`OUTREACH-2026-09-20.md`, `rel` vérifié sur le HTML
-   servi, 0 nofollow) : **4 courriels envoyés** depuis le Gmail de Damien, sur
-   son GO — Cloak and Detonate (Congying Xu + Shuai Wang, HKUST), SkillsMetric
-   (Xinze Chen, CUNY), SkillVetBench (Ismail Hossain, UTEP), Bruce W. Lee
-   (UPenn / METR) ; adresses prises dans les PDF ou le profil GitHub public,
-   jamais devinées. **PR OWASP #87** ouverte sur `ast08.md` (References),
-   divulgation en tête. ColluSkill écarté (aucune adresse), Simon Willison
-   abandonné (aucun canal privé vérifiable, décision Damien).
-7. `SEO-PROCESS.md` mis à jour dans les deux dépôts (identiques).
+1. **Correction SkillsMetric** (`e2b8d57`), sur mail de Xinze Chen (premier
+   auteur) reçu par Damien : partie expérimentale incomplète, deux tests de
+   détection statique sur des jeux de données différents et possiblement
+   chevauchants, résultats « pas particulièrement rigoureux », méthodes
+   d'attaque présentées comme hypothèses. Sur la page : AUC 0.93 · F1 73.4 %
+   marqués « (preliminary) » avec la réserve attribuée nommément dans la
+   ligne du tableau ; ventilation par type d'attaque (93 / 93 / 0 / 42 %)
+   retirée en bloc ; FAQ (HTML == JSON-LD, vérifié par script) et Sources
+   réattribuent la réserve à l'auteur, plus au papier. Son avis sur la
+   prudence des modèles (hors sujet) non repris. `dateModified`, pied de page
+   et `lastmod` du sitemap au 2026-09-22 ; la home n'a pas bougé.
+   Aucune autre page (home, sleeperattack) ne reprenait ces chiffres.
+   Déploiement prouvé : workflow `success`, empreintes servi == commit.
+2. **Search Console** : nouvelle indexation demandée pour
+   `/skill-scanner-evasion/` (confirmation « Indexation demandée »). Rien
+   demandé pour la home, inchangée depuis son exploration.
+3. **Réponse à Xinze Chen envoyée par Damien** le 2026-09-22 (remerciement,
+   lien vers la ligne corrigée, demande de lien depuis sa page projet).
+   Consigné dans `OUTREACH-2026-09-20.md` (`1497f1b`).
 
 ## État des dépôts
 
-`main` == `origin/main` des deux côtés après les commits de docs ci-dessous.
-
 | | skillinjection | sleeperattack |
 |---|---|---|
-| nouvelle page + home + sitemap + CSS | `5e374e2` | — |
-| home enrichie | `67762a7` | — |
-| workflow de contrôle | `8377bd4` | `cdf7610` |
-| `SEO-PROCESS.md` | dernier commit docs | dernier commit docs |
+| dernier commit | `1497f1b` (docs) ; page corrigée `e2b8d57` | inchangé depuis le 2026-09-20 |
+| `main` == `origin/main` | oui | oui |
 
-Sites en ligne à jour, prouvé par empreinte.
+Site skillinjection.com à jour, prouvé par empreinte le 2026-09-22.
 
 ## Reste à faire
 
-**À relire (2–3 semaines) :**
-- [ ] Rapport Pages : home revenue dans l'index ? nouvelle page indexée ?
-- [ ] Sitemaps : « Dernière lecture » remplie ? Sinon creuser.
+**À relire (vers le 2026-09-29) :**
+- [ ] Rapport Pages : doit passer à 2 dans l'index (rattrapage du rapport).
+- [ ] Sitemaps : « Dernière lecture » postérieure au 22/09 ?
+- [ ] Inspection de `/skill-scanner-evasion/` : exploration postérieure au
+      22/09 (version corrigée), et disparition de « erreur de traitement
+      temporaire » / « aucune page d'origine ».
 - [ ] Le 2026-10-20 : confronter `PREVISION-2026-09-20.md` aux chiffres.
 
 **À surveiller :**
-- [ ] Réponses des 4 auteurs dans Gmail ; une correction demandée → mettre la
-      page à jour avec attribution, et c'est le moment de demander le lien.
-      Pas de relance avant le 2026-10-11.
-- [ ] PR OWASP #87 (revue) et PR awesome-list #70 (revue).
+- [ ] Réponses des 3 autres auteurs (Cloak and Detonate, SkillVetBench,
+      Bruce W. Lee) et retour de Xinze Chen sur le lien. Pas de relance
+      avant le 2026-10-11.
+- [ ] PR OWASP #87 et PR awesome-list #70.
 
 **Bloqué sur Damien :**
 - [ ] Valider la propriété `https://sleeperattack.com/` dans Search Console.
-- [ ] Rendu mobile (< 560 px) de la home section 09 et de la nouvelle page :
-      les tableaux défilent horizontalement (`overflow-x:auto`), à voir sur
-      téléphone.
+- [ ] Rendu mobile (< 560 px) de la home section 09 et de
+      `/skill-scanner-evasion/` sur téléphone.
 
 **Proposé, sans GO :**
 - [ ] Page « vs » #1 « skill injection vs prompt injection », à arbitrer sur
-      les 236 impressions (quasi toutes sur « skill injection »).
-- [ ] Sortir la liste « Recent research » de la home vers une page dédiée si
-      elle continue de grossir (home à 2 308 mots).
+      les impressions (quasi toutes sur « skill injection »).
+- [ ] Sortir « Recent research » de la home vers une page dédiée si la
+      liste continue de grossir (home à 2 308 mots).
 - [ ] Contrôle de fraîcheur hors GitHub.
 - [ ] Bootstrap restant : CLAUDE.md projet, template Bureau.
+
+## Décisions structurelles
+
+- **Une correction d'auteur s'applique en bloc, pas à la carte** : quand un
+  auteur qualifie un test de non rigoureux, on retire toute la ventilation
+  issue de ce test, y compris les chiffres flatteurs, et on garde seulement
+  le chiffre global marqué préliminaire avec la réserve attribuée.
+- **Attribuer la réserve à qui l'a émise** : un mail d'auteur est une réserve
+  de l'auteur, pas une position du papier ; la page dit « its first author »,
+  jamais « the paper describes ».
+- **Paraphrase fidèle aux nuances** : « not particularly rigorous » ne
+  devient pas « not rigorous » ; « merely offered some hypotheses » devient
+  « offered as hypotheses ». Le mail complet est relu avant publication.
 
 ## Comment reprendre
 
 1. Lire ce fichier, puis `C:\brain\projets\seo-attack-pages\STATE.md` et son
-   dernier fichier `sessions/`.
+   dernier fichier dans `C:\brain\sessions\`.
 2. `git log -3` + `git status` dans les deux dépôts — attendre `main` ==
    `origin/main`.
 3. Search Console via l'extension Chrome (compte Google de Damien connecté).
-   Saisie : `form_input` sur la référence du champ, jamais la frappe simulée.
-   Si l'extension est déconnectée : Chrome headless pour le rendu, et les
-   clics Search Console reviennent à Damien.
+   Si « extension non connectée » alors que Chrome tourne :
+   `list_connected_browsers` puis `select_browser` sur le Chrome local, ça
+   suffit sans relancer Chrome. Saisie d'URL : `form_input` sur la référence
+   du champ « Inspecter n'importe quelle URL », puis Entrée ; l'URL directe
+   `/inspect?id=<url>` renvoie un 404. Clics : préférer `ref` aux
+   coordonnées, l'échelle de la capture peut dériver.
 4. Preuve de fraîcheur = empreinte servi == commit, ou run du workflow. Jamais
    un code HTTP.
 5. Builds Pages coincés : `gh api -X POST repos/Arlenjim/<repo>/pages/builds`.
 6. Toute nouvelle référence : page `arxiv.org/abs` + API `id_list`, résumé
-   complet lu avant de citer un chiffre.
+   complet lu avant de citer un chiffre. Toute correction d'auteur : mail
+   complet relu, paraphrase, attribution, jamais de citation du mail.
